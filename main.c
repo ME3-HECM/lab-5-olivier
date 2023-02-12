@@ -7,7 +7,10 @@
 
 
 #include <xc.h>
+#include "serial.h"
+#include "LCD.h"
 
 void main(void) {
     initUSART4();
+    LCD_Init();
 }

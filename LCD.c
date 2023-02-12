@@ -126,7 +126,7 @@ void LCD_sendstring(char *string)
     // This counts the amount of spaces used 
     int count=0;
     while(*string != 0){  // While the data pointed to isn't a 0x00 do below (strings in C must end with a NULL byte) 
-        //If reached end of screen scroll to next part for each dditional letter
+        //If reached end of screen scroll to next part for each additional letter
         if (count>=16){ 
             //pause message so it can be read before scrolling
            if (count&16) {__delay_ms(1000);}
@@ -134,9 +134,11 @@ void LCD_sendstring(char *string)
            __delay_ms(2);
         }
         //When moving to the next line(after max 40 char reached reset count)
-        if (count>=40){
-            count=0;}
-        	//Send out the current byte pointed to and increment the pointer
+        if (count>=40)
+        {
+            count=0;
+        }
+        //Send out the current byte pointed to and increment the pointer
 		LCD_sendbyte(*string++,1); 
         __delay_us(20);
         count++;
