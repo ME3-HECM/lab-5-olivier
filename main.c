@@ -11,6 +11,9 @@
 #include "LCD.h"
 
 void main(void) {
+    char data;
     initUSART4();
     LCD_Init();
+    data= getCharSerial4();
+    LCD_sendstring(data);
 }
