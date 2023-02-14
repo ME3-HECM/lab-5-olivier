@@ -12,7 +12,6 @@ void initUSART4(void) {
     //set baud rate 64*10^6*(64*(SP4BGRL+1)) where 64*10^6 is Fosc
     SP4BRGL = 51; 			
     SP4BRGH = 0;			//not used
-    
 
     RC4STAbits.CREN = 1; 		//enable continuos reception
     TX4STAbits.TXEN = 1; 		//enable transmitter
