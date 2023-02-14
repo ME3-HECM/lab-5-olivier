@@ -1,5 +1,6 @@
 #include <xc.h>
 #include "interrupts.h"
+#include "serial.h"
 
 /************************************
  * Function to turn on interrupts and set if priority is used
@@ -7,20 +8,19 @@
 ************************************/
 void Interrupts_init(void)
 {
-    //comparator 1 interrupt Enable bit, Enables Timer BIT
-    PIE0bits.TMR0IE=1; //the E at the end is for enable
+    //RC4 interrupt Enable bit for serial port and TX4 FOR TRANSMITTER   
+    PIE4bits.RC4IE=1; //the E at the end is for enable
+    PIE4bits.TX4IE=1; 
     
-     // setup pin for output (connected to LED)
-    LATDbits.LATD7=0;   //set initial output state this is the LED 
-    TRISDbits.TRISD7=0; //set TRIS value for pin (output)
+    INTCONbits.IPEN=1;//Enable priority level setting
+    //This sets the priority to high  interrupt  bit
+    IPR4bits.RC4IP=1;// The P at the end is for priority and
+    IPR4bits.TX4IP=1;
     
-    //This sets the priority to high for Timer 0 interrupt  bit
-    IPR0bits.TMR0IP=1;// The P at the end is for priority and
-    
-    INTCONbits.PEIE=1;//eNABLE PERIPHERAL INTERRUPTS
+    INTCONbits.PEIE=1;//ENABLE PERIPHERAL INTERRUPTS
     //Interrupt control INTCON register, enables all interrupts globally
     INTCONbits.GIE=1;
-               // It's a good idea to turn on global interrupts last, once all other interrupt configuration is done.
+    // It's a good idea to turn on global interrupts last, once all other interrupt configuration is done.
 }
 
 /************************************
@@ -29,16 +29,9 @@ void Interrupts_init(void)
 ************************************/
 void __interrupt(high_priority) HighISR()
 {
-               //add your ISR code here i.e. check the flag, do something (i.e. toggle an LED), clear the flag...
+    //check the TX reg is free and send a byte
     if (PIR0bits.TMR0IF) {
-            //update happens when low reg is written to
-        //Set to 3035 starting val because this means the amount of ticks 
-        //before overflow is just enough to overflow every second
-             TMR0H=0b00001011;            //write High reg first, update happens when low reg is written to
-             TMR0L=0b11011011;
-            PIR0bits.TMR0IF=0; //CLEAR THE INTERRUPT FLAG SO IT CAN BE SET again 
-            LATDbits.LATD7=!LATDbits.LATD7;
-            //signify by a change in light
+        TX4REG = charToSend; //transfer char to transmitter
     }  
 }
 
