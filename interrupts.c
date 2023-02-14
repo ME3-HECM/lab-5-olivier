@@ -28,15 +28,14 @@ void Interrupts_init(void)
 ************************************/
 void __interrupt(high_priority) HighISR()
 {
-    //check the TX reg is free and send a byte
-    if (PIR0bits.TMR0IF) {
+    if (!isDataInTxBuf()) {
+    sendflag=0;
+    PIE4bits.TX4IE=0;} 
+    //check the TX reg is free and activate flag to be picked up elsewhere
+    if (PIR4bits.TX4IF) {
        sendflag=1; //call
     }  
-    
-      if (PIR0bits.TMR0IF) {
-       sendflag=1; //call
-    }  
-    
+
 }
 
 

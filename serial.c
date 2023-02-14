@@ -22,12 +22,14 @@ void initUSART4(void) {
 }
 
 //function to wait for a byte to arrive on serial port and read it once it does 
+// This takes data input from the PC: RC4
 char getCharSerial4(void) {
     while (!PIR4bits.RC4IF);//wait for the data to arrive
     return RC4REG; //return byte in RCREG
 }
 
 //function to check the TX reg is free and send a byte
+//This sends data to the real term program: TX4
 void sendCharSerial4(char charToSend) {
     while (!PIR4bits.TX4IF); // wait for flag to be set
     TX4REG = charToSend; //transfer char to transmitter
@@ -37,7 +39,7 @@ void sendCharSerial4(char charToSend) {
 //function to send a string over the serial interface
 void sendStringSerial4(char *string){
     // This counts the amount of spaces used 
-    LCD_sendstring(string); //SANity check to see it acc works
+   // LCD_sendstring(string); //SANity check to see it acc works
     while(*string != 0){  // While the data pointed to isn't a 0x00 do below (strings in C must end with a NULL byte) 
         //Send out the current byte pointed to and increment the pointer
 		sendCharSerial4(*string++); 
@@ -90,6 +92,11 @@ char isDataInTxBuf (void){
 //add a string to the buffer
 void TxBufferedString(char *string){
 	//Hint: look at how you did this for the LCD lab 
+      while(*string != 0){  // While the data pointed to isn't a 0x00 do below (strings in C must end with a NULL byte) 
+        //Send out the current byte pointed to and increment the pointer
+		putCharToTxBuf(*string++); 
+        __delay_us(20);
+	}
 }
 
 //initialise interrupt driven transmission of the Tx buf

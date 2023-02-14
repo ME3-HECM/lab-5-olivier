@@ -6,8 +6,8 @@
 #include <xc.h>
 
 #define _XTAL_FREQ 64000000
-char sendflag;
-char getflag;
+volatile int sendflag;
+volatile int getflag;
 
 void Interrupts_init(void);
 void __interrupt(high_priority) HighISR();

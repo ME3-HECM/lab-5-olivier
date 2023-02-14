@@ -14,20 +14,23 @@
 #include "LCD.h"
 #include <stdio.h>
 #include "ADC.h"
-
+#include "interrupts.h"
 #define _XTAL_FREQ 64000000 //note intrinsic _delay function is 62.5ns at 64,000,000Hz  
 void main(void) {
-    char data[20];
+    char senddata[20];
     initUSART4();
+    ADC_init();
+    Interrupts_init();
     LCD_Init();
     LCD_setline(0);
-    ADC_init();
     while (1){
-        if (getflag){
-            getCharSerial4();
+        ADC2String(senddata,ADC_getval());
+        TxBufferedString(senddata);
+         //Check if any data is left in buffer if so enable on interrupt
+        sendTxBuf();
+        while (sendflag&1){
+            sendCharSerial4(getCharFromTxBuf());
         }
-        if (sendflag){
-            sendCharSerial4();
-        }
+   
 }
 }
