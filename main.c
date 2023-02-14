@@ -21,8 +21,8 @@ void main(void) {
     LCD_Init();
     LCD_setline(0);
     while (1){
-    data=getCharSerial4();
-    LCD_sendbyte(data,1);
-    sendCharSerial4(data);
+    data=getCharSerial4();//Store character from realterm in variab;le
+    LCD_sendbyte(data,1); //send stored character to LCD
+    sendCharSerial4(data); //Send stored character to Realterm from pc input
 }
 }
