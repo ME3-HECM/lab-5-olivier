@@ -13,16 +13,19 @@
 #include "serial.h"
 #include "LCD.h"
 #include <stdio.h>
+#include "ADC.h"
 
 #define _XTAL_FREQ 64000000 //note intrinsic _delay function is 62.5ns at 64,000,000Hz  
 void main(void) {
-    char *data;
+    char data[20];
     initUSART4();
     LCD_Init();
     LCD_setline(0);
+    ADC_init();
     while (1){
-    data=getCharSerial4();//Store character from realterm in variab;le
-    LCD_sendbyte(data,1); //send stored character to LCD
-    sendCharSerial4(data); //Send stored character to Realterm from pc input
+    ADC2String(data,ADC_getval());//Get ADC val
+    sendStringSerial4(data); //Send ADC VAL to realterm program
+    __delay_ms(1000);
+    LCD_sendbyte(DCLEAR,0); //clear LCD
 }
 }

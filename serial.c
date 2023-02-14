@@ -1,6 +1,7 @@
 #include <xc.h>
 #include "serial.h"
 #include <stdio.h>
+#include "LCD.h"
 
 void initUSART4(void) {
     TRISCbits.TRISC4=1; //Set c4 as input
@@ -35,9 +36,14 @@ void sendCharSerial4(char charToSend) {
 
 //function to send a string over the serial interface
 void sendStringSerial4(char *string){
-	//Hint: look at how you did this for the LCD lab 
+    // This counts the amount of spaces used 
+    LCD_sendstring(string); //SANity check to see it acc works
+    while(*string != 0){  // While the data pointed to isn't a 0x00 do below (strings in C must end with a NULL byte) 
+        //Send out the current byte pointed to and increment the pointer
+		sendCharSerial4(*string++); 
+        __delay_us(20);
+	}
 }
-
 
 //functions below are for Ex3 and 4 (optional)
 
