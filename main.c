@@ -23,9 +23,11 @@ void main(void) {
     LCD_setline(0);
     ADC_init();
     while (1){
-    ADC2String(data,ADC_getval());//Get ADC val
-    sendStringSerial4(data); //Send ADC VAL to realterm program
-    __delay_ms(1000);
-    LCD_sendbyte(DCLEAR,0); //clear LCD
+        if (getflag){
+            getCharSerial4();
+        }
+        if (sendflag){
+            sendCharSerial4();
+        }
 }
 }
