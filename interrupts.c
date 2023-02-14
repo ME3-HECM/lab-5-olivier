@@ -10,6 +10,7 @@ void Interrupts_init(void)
 {
     //RC4 interrupt Enable bit for serial port and TX4 FOR TRANSMITTER   
     PIE4bits.RC4IE=1; //the E at the end is for enable
+    PIE4bits.TX4IE=1; 
     
     INTCONbits.IPEN=1;//Enable priority level setting
     //This sets the priority to high  interrupt  bit
@@ -30,13 +31,8 @@ void __interrupt(high_priority) HighISR()
 {
     //check the TX reg is free and send a byte
     if (PIR0bits.TMR0IF) {
-       sendflag=1; //call
+        TX4REG = charToSend; //transfer char to transmitter
     }  
-    
-      if (PIR0bits.TMR0IF) {
-       sendflag=1; //call
-    }  
-    
 }
 
 
