@@ -27,7 +27,7 @@ void Interrupts_init(void)
 * Make sure all enabled interrupts are checked and flags cleared
 ************************************/
 void __interrupt(high_priority) HighISR()
-{
+{ 
     if (!isDataInTxBuf()) {
     sendflag=0;
     PIE4bits.TX4IE=0;} 
