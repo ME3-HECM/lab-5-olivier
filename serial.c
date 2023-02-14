@@ -3,13 +3,14 @@
 #include <stdio.h>
 
 void initUSART4(void) {
-    TRISCbits.TRISC4=1;
-    TRISCbits.TRISC1=1;
+    TRISCbits.TRISC4=1; //Set c4 as input
+    TRISCbits.TRISC1=1; //Set c1 as input
     RC0PPS = 0x12; // Map EUSART4 TX to RC0
     RX4PPS = 0x11; // RX is RC1   
     BAUD4CONbits.BRG16 = 0; 	//set baud rate scaling
     TX4STAbits.BRGH = 0; 		//high baud rate select bit
-    SP4BRGL = 103; 			//set baud rate to 103 = 9600bps
+    //set baud rate 64*10^6*(64*(SP4BGRL+1)) where 64*10^6 is Fosc
+    SP4BRGL = 51; 			
     SP4BRGH = 0;			//not used
     
 
