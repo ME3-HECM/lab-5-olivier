@@ -16,6 +16,10 @@
 #include "ADC.h"
 #include "interrupts.h"
 #define _XTAL_FREQ 64000000 //note intrinsic _delay function is 62.5ns at 64,000,000Hz  
+extern volatile int sendflag;
+extern volatile int getflag;
+
+
 void main(void) {
     char senddata[20];
     initUSART4();
@@ -27,10 +31,9 @@ void main(void) {
         ADC2String(senddata,ADC_getval());
         TxBufferedString(senddata);
          //Check if any data is left in buffer if so enable on interrupt
-        sendTxBuf();
-        while (sendflag&1){
-            sendCharSerial4(getCharFromTxBuf());
+        //this waits for the entire string to be sent before moving on
+       while (DataFlag){
+           sendTxBuf();
         }
-   
 }
 }

@@ -9,12 +9,12 @@
 void Interrupts_init(void)
 {
     //RC4 interrupt Enable bit for serial port and TX4 FOR TRANSMITTER   
-    PIE4bits.RC4IE=1; //the E at the end is for enable
+   // PIE4bits.RC4IE=1; //the E at the end is for enable
     
     INTCONbits.IPEN=1;//Enable priority level setting
     //This sets the priority to high  interrupt  bit
-    IPR4bits.RC4IP=1;// The P at the end is for priority and
-    IPR4bits.TX4IP=1;
+    //IPR4bits.RC4IP=1;// The P at the end is for priority and
+   // IPR4bits.TX4IP=1;
     
     INTCONbits.PEIE=1;//ENABLE PERIPHERAL INTERRUPTS
     //Interrupt control INTCON register, enables all interrupts globally
@@ -27,14 +27,15 @@ void Interrupts_init(void)
 * Make sure all enabled interrupts are checked and flags cleared
 ************************************/
 void __interrupt(high_priority) HighISR()
-{ 
-    if (!isDataInTxBuf()) {
-    sendflag=0;
-    PIE4bits.TX4IE=0;} 
-    //check the TX reg is free and activate flag to be picked up elsewhere
-    if (PIR4bits.TX4IF) {
-       sendflag=1; //call
-    }  
+// When reg is cleared this flag is set and the ISR 
+{  if (PIR4bits.TX4IF) {
+    //This sends out the current pointed char in the buffer
+            TX4REG=getCharFromTxBuf();
+        } 
+    if (DataFlag&0){
+        //when buffer is empty turn off the interrupt so the ISR isnt called
+             PIE4bits.TX4IE=0;
+    } 
 
 }
 

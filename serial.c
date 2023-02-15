@@ -95,12 +95,15 @@ void TxBufferedString(char *string){
       while(*string != 0){  // While the data pointed to isn't a 0x00 do below (strings in C must end with a NULL byte) 
         //Send out the current byte pointed to and increment the pointer
 		putCharToTxBuf(*string++); 
-        __delay_us(20);
 	}
 }
 
 //initialise interrupt driven transmission of the Tx buf
 //your ISR needs to be setup to turn this interrupt off once the buffer is empty
 void sendTxBuf(void){
-    if (isDataInTxBuf()) {PIE4bits.TX4IE=1;} //enable the TX interrupt to send data
+    if (isDataInTxBuf()) {PIE4bits.TX4IE=1;//enable the TX interrupt to send dat
+    DataFlag=1;}//data flag just signifies for other scripts that there is data in buff or not
+    else { 
+        DataFlag=0;
+    }
 }
