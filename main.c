@@ -31,9 +31,12 @@ void main(void) {
         TxBufferedString(senddata);
          //Check if any data is left in buffer if so enable on interrupt
         //this waits for the entire string to be sent before moving on
-       // sendTxBuf();
+       //sanity to check sendTxBuf();
        while (DataFlag){
-           sendTxBuf();
+           //when DataFlag=0 it runs through the while loop once more before
+           // leaving which sets teh DataFlag back to 1 which enables it
+           //to enter the while loop again
+          sendTxBuf();
         }
 }
 }
