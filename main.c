@@ -16,8 +16,7 @@
 #include "ADC.h"
 #include "interrupts.h"
 #define _XTAL_FREQ 64000000 //note intrinsic _delay function is 62.5ns at 64,000,000Hz  
-extern volatile int sendflag;
-extern volatile int getflag;
+
 
 
 void main(void) {
@@ -32,6 +31,7 @@ void main(void) {
         TxBufferedString(senddata);
          //Check if any data is left in buffer if so enable on interrupt
         //this waits for the entire string to be sent before moving on
+       // sendTxBuf();
        while (DataFlag){
            sendTxBuf();
         }
