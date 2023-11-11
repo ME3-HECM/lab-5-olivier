@@ -18,7 +18,8 @@ volatile char EUSART4TXbuf[TX_BUF_SIZE];
 volatile char TxBufWriteCnt=0;
 volatile char TxBufReadCnt=0;
 
-
+//variable for signifying buffer is empty
+volatile char DataFlag=1;
 //basic EUSART funcitons
 void initUSART4(void);
 char getCharSerial4(void);
